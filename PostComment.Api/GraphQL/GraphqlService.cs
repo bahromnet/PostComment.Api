@@ -6,7 +6,12 @@ public static class GraphqlService
 {
     public static IServiceCollection AddGraphQLService(this IServiceCollection services)
     {
-        services.AddGraphQLServer().AddQueryType<UserService>();
+        services.AddGraphQLServer().AddQueryType(x => x.Name("Bahrom"))
+            .AddType<UserService>()
+            .AddType<PostService>()
+            .AddType<CommentService>()
+            .AddType<PermissionService>()
+            .AddType<RoleService>();
 
         return services;
     }
