@@ -1,7 +1,6 @@
 ﻿using Application.Api.Common.Exceptions;
 using Application.Api.Common.Interfaces;
 using Domain.Api.Entities;
-using Domain.Api.IdentityEntity;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 
