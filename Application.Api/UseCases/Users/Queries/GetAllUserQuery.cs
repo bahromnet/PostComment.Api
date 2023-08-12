@@ -6,11 +6,11 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Application.Api.UseCases.Users.Queries;
 
-public class GetAllUserQuery : IRequest<IQueryable<UserGetDto>>
+public class GetAllUserQuery : IRequest<List<UserGetDto>>
 {
 }
 
-public class GetAllUsersQueryHandler : IRequestHandler<GetAllUserQuery, IQueryable<UserGetDto>>
+public class GetAllUsersQueryHandler : IRequestHandler<GetAllUserQuery, List<UserGetDto>>
 {
     private readonly IApplicationDbContext _context;
     private readonly IMapper _mapper;
@@ -18,10 +18,10 @@ public class GetAllUsersQueryHandler : IRequestHandler<GetAllUserQuery, IQueryab
     public GetAllUsersQueryHandler(IApplicationDbContext context, IMapper mapper)
      => (_context, _mapper) = (context, mapper);
 
-    public async Task<IQueryable<UserGetDto>> Handle(GetAllUserQuery request, CancellationToken cancellationToken)
+    public async Task<List<UserGetDto>> Handle(GetAllUserQuery request, CancellationToken cancellationToken)
     {
         var entities = _context.Users.Include(x => x.Roles);
-        var result = _mapper.ProjectTo<UserGetDto>(entities);
+        var result = _mapper.Map<List<UserGetDto>>(entities);
         return result;
     }
 }
