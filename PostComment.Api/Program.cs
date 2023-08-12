@@ -1,7 +1,6 @@
-
 using Application.Api;
 using Infrastructure.Api;
-using PostComment.Api.GraphQL.Services;
+using PostComment.Api.GraphQL;
 using PostComment.Api.Middlewares;
 using PostComment.Api.Services;
 using System.Text.Json.Serialization;
@@ -35,9 +34,7 @@ namespace PostComment.Api
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
 
-            builder.Services.AddGraphQLServer().AddQueryType(x => x.Name("Bahrom"))
-                .AddType<UserService>()
-                .AddType<PermissionService>();
+            builder.Services.AddGraphQLService();
 
             var app = builder.Build();
             app.UseRateLimiter();
