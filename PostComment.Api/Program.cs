@@ -1,8 +1,10 @@
 
 using Application.Api;
 using Infrastructure.Api;
+using PostComment.Api.GraphQL.Services;
 using PostComment.Api.Middlewares;
 using PostComment.Api.Services;
+using System.Text.Json.Serialization;
 
 namespace PostComment.Api
 {
@@ -20,9 +22,10 @@ namespace PostComment.Api
 
             builder.Services.AddRateLimiterService();
 
-            
-
-            builder.Services.AddControllers();
+            builder.Services.AddControllers().AddJsonOptions(x =>
+            {
+                x.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles;
+            });
 
             builder.Services.AddStackExchangeRedisCache(options =>
             {
@@ -31,6 +34,10 @@ namespace PostComment.Api
 
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
+
+            builder.Services.AddGraphQLServer().AddQueryType(x => x.Name("Bahrom"))
+                .AddType<UserService>()
+                .AddType<PermissionService>();
 
             var app = builder.Build();
             app.UseRateLimiter();
@@ -46,6 +53,7 @@ namespace PostComment.Api
             app.UseETagger();
             app.UseAuthorization();
             app.UseAuthentication();
+            app.MapGraphQL();
             app.MapControllers();
 
             app.Run();
